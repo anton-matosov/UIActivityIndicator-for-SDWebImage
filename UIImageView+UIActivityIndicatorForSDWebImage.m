@@ -33,22 +33,29 @@ static char TAG_ACTIVITY_INDICATOR;
     
     if ([self activityIndicator] == nil) {
         self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:activityStyle];
-        
-        self.activityIndicator.autoresizingMask = UIViewAutoresizingNone;
-        
-        //calculate the correct position
-        float width = self.activityIndicator.frame.size.width;
-        float height = self.activityIndicator.frame.size.height;
-        float x = (self.frame.size.width / 2.0) - width/2;
-        float y = (self.frame.size.height / 2.0) - height/2;
-        self.activityIndicator.frame = CGRectMake(x, y, width, height);
-        
-        self.activityIndicator.hidesWhenStopped = YES;
-        [self addSubview:self.activityIndicator];
-    }
-    
+		self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+		self.activityIndicator.hidesWhenStopped = YES;
+		self.activityIndicator.tag = TAG_ACTIVITY_INDICATOR;
+		[self addSubview:self.activityIndicator];
+
+		// center it
+		[self addConstraint:[NSLayoutConstraint constraintWithItem:self
+														 attribute:NSLayoutAttributeCenterX
+														 relatedBy:NSLayoutRelationEqual
+															toItem:self.activityIndicator
+														 attribute:NSLayoutAttributeCenterX
+														multiplier:1
+														  constant:0]];
+
+		[self addConstraint:[NSLayoutConstraint constraintWithItem:self
+														 attribute:NSLayoutAttributeCenterY
+														 relatedBy:NSLayoutRelationEqual
+															toItem:self.activityIndicator
+														 attribute:NSLayoutAttributeCenterY
+														multiplier:1
+														  constant:0]];
+	}
     [self.activityIndicator startAnimating];
-    
 }
 
 - (void)removeActivityIndicator {
